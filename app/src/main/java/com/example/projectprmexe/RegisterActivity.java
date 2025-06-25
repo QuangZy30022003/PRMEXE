@@ -1,14 +1,21 @@
 package com.example.projectprmexe;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,10 +25,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText etFullName, etEmail, etPassword, etConfirmPassword, etPhone, etAddress, etGender, etBirthDate;
+    private EditText etFullName, etEmail, etPassword, etConfirmPassword, etPhone, etAddress, etBirthDate;
+    private Spinner spinnerGender;
     private Button btnRegister;
     private TextView tvLogin;
     private AuthApi authApi;
+    private String selectedGender = "Nam";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +47,28 @@ public class RegisterActivity extends AppCompatActivity {
                 .build();
         authApi = retrofit.create(AuthApi.class);
         
+        // Thiết lập Spinner giới tính
+        String[] genders = {"Nam", "Nữ"};
+        ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, genders);
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerGender.setAdapter(genderAdapter);
+        spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedGender = genders[position];
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        // Thiết lập DatePicker cho ngày sinh
+        etBirthDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePicker();
+            }
+        });
+
         // Thiết lập click listeners
         setupClickListeners();
     }
@@ -49,10 +80,26 @@ public class RegisterActivity extends AppCompatActivity {
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
         etPhone = findViewById(R.id.etPhone);
         etAddress = findViewById(R.id.etAddress);
-        etGender = findViewById(R.id.etGender);
+        spinnerGender = findViewById(R.id.spinnerGender);
         etBirthDate = findViewById(R.id.etBirthDate);
         btnRegister = findViewById(R.id.btnRegister);
         tvLogin = findViewById(R.id.tvLogin);
+    }
+
+    private void showDatePicker() {
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String date = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth);
+                etBirthDate.setText(date);
+            }
+        }, year, month, day);
+        datePickerDialog.show();
     }
 
     private void setupClickListeners() {
@@ -79,7 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
         String confirmPassword = etConfirmPassword.getText().toString().trim();
         String phone = etPhone.getText().toString().trim();
         String address = etAddress.getText().toString().trim();
-        String gender = etGender.getText().toString().trim();
+        String gender = selectedGender;
         String birthDate = etBirthDate.getText().toString().trim();
 
         // Validate input
@@ -129,8 +176,8 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
         if (TextUtils.isEmpty(gender)) {
-            etGender.setError("Vui lòng nhập giới tính");
-            etGender.requestFocus();
+            Toast.makeText(this, "Vui lòng chọn giới tính", Toast.LENGTH_SHORT).show();
+            spinnerGender.requestFocus();
             return;
         }
         if (TextUtils.isEmpty(birthDate)) {
