@@ -111,10 +111,9 @@ public class ProductDetailActivity extends AppCompatActivity {
             txtAvailability.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
         }
 
-        // Format and display created date
-        if (product.getCreatedAt() != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
-            txtCreatedAt.setText("Ngày tạo: " + sdf.format(product.getCreatedAt()));
+        // Display created date as string
+        if (product.getCreatedAt() != null && !product.getCreatedAt().isEmpty()) {
+            txtCreatedAt.setText("Ngày tạo: " + product.getCreatedAt());
         } else {
             txtCreatedAt.setText("Ngày tạo: Không có thông tin");
         }

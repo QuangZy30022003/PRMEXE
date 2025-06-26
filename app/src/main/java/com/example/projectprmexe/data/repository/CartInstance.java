@@ -4,7 +4,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CartInstance {
-    private static final String BASE_URL = "http://10.0.2.2:7262/";
+    private static final String BASE_URL = "http://10.0.2.2:5150/";
 
     private static Retrofit retrofit;
 

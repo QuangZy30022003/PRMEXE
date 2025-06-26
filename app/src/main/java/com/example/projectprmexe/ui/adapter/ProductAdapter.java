@@ -40,8 +40,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         ProductDto product = productList.get(position);
         
-        holder.txtName.setText(product.getName());
-        holder.txtDescription.setText(product.getDescription());
+        // Debug logging
+        System.out.println("✅ FIXED - Binding product " + position + ": " + product.getName() + " - " + product.getPrice());
+        
+        holder.txtName.setText(product.getName() != null ? product.getName() : "No name");
+        holder.txtDescription.setText(product.getDescription() != null ? product.getDescription() : "No description");
         holder.txtPrice.setText(product.getFormattedPrice());
         
         // Set availability status

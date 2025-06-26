@@ -1,18 +1,36 @@
 package com.example.projectprmexe.data.model.Product;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class ProductDto {
+    @SerializedName("ProductId")
     private int productId;
+    
+    @SerializedName("Name")
     private String name;
+    
+    @SerializedName("Description")
     private String description;
+    
+    @SerializedName("Price")
     private double price;
+    
+    @SerializedName("ImageUrl")
     private String imageUrl;
+    
+    @SerializedName("CategoryId")
     private int categoryId;
+    
+    @SerializedName("IsAvailable")
     private boolean isAvailable;
-    private Date createdAt;
+    
+    @SerializedName("CreatedAt")
+    private String createdAt; // Change to String to avoid date parsing issues
+    
+    @SerializedName("Images")
     private List<ProductImageDto> images = new ArrayList<>();
 
     // Default constructor
@@ -50,8 +68,8 @@ public class ProductDto {
     public boolean isAvailable() { return isAvailable; }
     public void setAvailable(boolean available) { isAvailable = available; }
 
-    public Date getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
+    public String getCreatedAt() { return createdAt; }
+    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
 
     public List<ProductImageDto> getImages() { return images; }
     public void setImages(List<ProductImageDto> images) { this.images = images; }

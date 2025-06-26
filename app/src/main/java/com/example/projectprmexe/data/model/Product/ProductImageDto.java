@@ -1,7 +1,12 @@
 package com.example.projectprmexe.data.model.Product;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ProductImageDto {
+    @SerializedName("Id")
     private int id;
+    
+    @SerializedName("ImageUrl")
     private String imageUrl;
 
     // Default constructor

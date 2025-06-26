@@ -85,35 +85,51 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
     }
 
     private void loadProducts() {
-        ProductAPI api = ProductInstance.getApiService();
-        Toast.makeText(this, "Đang tải sản phẩm từ API...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Starting API call...", Toast.LENGTH_SHORT).show();
         
-        api.getAllProducts().enqueue(new Callback<List<ProductDto>>() {
+        ProductAPI api = ProductInstance.getApiService();
+        Call<List<ProductDto>> call = api.getAllProducts();
+        
+        call.enqueue(new Callback<List<ProductDto>>() {
             @Override
             public void onResponse(Call<List<ProductDto>> call, Response<List<ProductDto>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(ProductListActivity.this, "API thành công! Có " + response.body().size() + " sản phẩm", Toast.LENGTH_SHORT).show();
-                    productList.clear();
-                    productList.addAll(response.body());
-                    filteredList.clear();
-                    filteredList.addAll(productList);
-                    adapter.notifyDataSetChanged();
+                if (response.isSuccessful()) {
+                    List<ProductDto> products = response.body();
+                    if (products != null && !products.isEmpty()) {
+                        Toast.makeText(ProductListActivity.this, "SUCCESS! Got " + products.size() + " products", Toast.LENGTH_LONG).show();
+                        
+                        // Debug: Check first product data
+                        ProductDto firstProduct = products.get(0);
+                        Toast.makeText(ProductListActivity.this, "✅ FIXED: " + firstProduct.getName() + " - " + firstProduct.getPrice() + " VND", Toast.LENGTH_LONG).show();
+                        
+                        productList.clear();
+                        productList.addAll(products);
+                        filteredList.clear();
+                        filteredList.addAll(productList);
+                        adapter.notifyDataSetChanged();
+                        
+                        Toast.makeText(ProductListActivity.this, "UI Updated! FilteredList size: " + filteredList.size(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ProductListActivity.this, "Empty response from server", Toast.LENGTH_LONG).show();
+                        addSampleData();
+                    }
                 } else {
-                    Toast.makeText(ProductListActivity.this, "API lỗi - Response code: " + response.code(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(ProductListActivity.this, "Server error: " + response.code(), Toast.LENGTH_LONG).show();
                     addSampleData();
                 }
             }
 
             @Override
             public void onFailure(Call<List<ProductDto>> call, Throwable t) {
-                Toast.makeText(ProductListActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                // Add some sample data for testing
+                Toast.makeText(ProductListActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 addSampleData();
             }
         });
     }
 
     private void addSampleData() {
+        Toast.makeText(this, "⚠️ Adding sample data (API failed)", Toast.LENGTH_LONG).show();
+        productList.clear(); // Clear any existing data first
         productList.add(new ProductDto(1, "Hoa Hồng Đỏ", "Hoa hồng đỏ tươi đẹp", 50000, "sample_image_url", true));
         productList.add(new ProductDto(2, "Hoa Ly Trắng", "Hoa ly trắng tinh khôi", 75000, "sample_image_url", true));
         productList.add(new ProductDto(3, "Nước Ép Cam", "Nước ép cam tươi nguyên chất", 25000, "sample_image_url", true));
