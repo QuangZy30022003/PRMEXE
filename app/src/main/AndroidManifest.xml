@@ -34,7 +34,16 @@
             android:name=".ui.CartActivity"
             android:exported="false" />
 
-        <!-- 🔵 MainActivity không cần intent-filter -->
+        <!-- Product Activities -->
+        <activity
+            android:name=".ui.ProductListActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.ProductDetailActivity"
+            android:exported="false" />
+
+        <!-- �"� MainActivity không cần intent-filter -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />
