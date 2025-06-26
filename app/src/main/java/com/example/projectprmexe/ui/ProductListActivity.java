@@ -86,23 +86,27 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
 
     private void loadProducts() {
         ProductAPI api = ProductInstance.getApiService();
+        Toast.makeText(this, "Đang tải sản phẩm từ API...", Toast.LENGTH_SHORT).show();
+        
         api.getAllProducts().enqueue(new Callback<List<ProductDto>>() {
             @Override
             public void onResponse(Call<List<ProductDto>> call, Response<List<ProductDto>> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(ProductListActivity.this, "API thành công! Có " + response.body().size() + " sản phẩm", Toast.LENGTH_SHORT).show();
                     productList.clear();
                     productList.addAll(response.body());
                     filteredList.clear();
                     filteredList.addAll(productList);
                     adapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(ProductListActivity.this, "Không thể tải danh sách sản phẩm", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProductListActivity.this, "API lỗi - Response code: " + response.code(), Toast.LENGTH_LONG).show();
+                    addSampleData();
                 }
             }
 
             @Override
             public void onFailure(Call<List<ProductDto>> call, Throwable t) {
-                Toast.makeText(ProductListActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProductListActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 // Add some sample data for testing
                 addSampleData();
             }
