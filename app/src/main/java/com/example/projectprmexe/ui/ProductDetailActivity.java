@@ -71,14 +71,17 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void loadProductDetail() {
+        Toast.makeText(this, "🔄 Loading product ID: " + productId, Toast.LENGTH_SHORT).show();
+        
         ProductAPI api = ProductInstance.getApiService();
         api.getProductById(productId).enqueue(new Callback<ProductDto>() {
             @Override
             public void onResponse(Call<ProductDto> call, Response<ProductDto> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(ProductDetailActivity.this, "✅ Loaded: " + response.body().getName(), Toast.LENGTH_SHORT).show();
                     displayProductDetail(response.body());
                 } else {
-                    Toast.makeText(ProductDetailActivity.this, "Không thể tải thông tin sản phẩm", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProductDetailActivity.this, "❌ API Error: " + response.code(), Toast.LENGTH_LONG).show();
                     // Load sample data for testing
                     loadSampleData();
                 }
@@ -86,7 +89,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ProductDto> call, Throwable t) {
-                Toast.makeText(ProductDetailActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProductDetailActivity.this, "💥 Connection Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 // Load sample data for testing
                 loadSampleData();
             }
