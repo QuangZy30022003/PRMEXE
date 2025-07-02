@@ -11,6 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectprmexe.R;
 import com.example.projectprmexe.data.model.Product.ProductDto;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.List;
 
@@ -41,7 +47,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         ProductDto product = productList.get(position);
         
         // Debug logging
-        System.out.println("✅ FIXED - Binding product " + position + ": " + product.getName() + " - " + product.getPrice());
+        System.out.println("Binding product " + position + ": " + product.getName() + " - " + product.getPrice());
         
         holder.txtName.setText(product.getName() != null ? product.getName() : "No name");
         holder.txtDescription.setText(product.getDescription() != null ? product.getDescription() : "No description");
@@ -56,9 +62,33 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             holder.txtAvailability.setTextColor(holder.itemView.getContext().getResources().getColor(android.R.color.holo_red_dark));
         }
 
-        // For now, we'll use a placeholder for images since we're using basic ImageView
-        // In a real app, you'd use Glide or Picasso here
-        holder.imgProduct.setImageResource(R.drawable.ic_launcher_foreground);
+        // Load product image using Glide
+        String imageUrl = product.getFirstImageUrl();
+        System.out.println("Loading image for " + product.getName() + ": " + imageUrl);
+        if (imageUrl != null && !imageUrl.isEmpty() && !imageUrl.equals("sample_image_url")) {
+            Glide.with(holder.itemView.getContext())
+                    .load(imageUrl)
+                    .placeholder(R.drawable.image_placeholder)
+                    .error(R.drawable.image_placeholder)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .listener(new RequestListener<android.graphics.drawable.Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(GlideException e, Object model, Target<android.graphics.drawable.Drawable> target, boolean isFirstResource) {
+                            System.out.println("Failed to load image: " + imageUrl + " - Error: " + (e != null ? e.getMessage() : "Unknown"));
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(android.graphics.drawable.Drawable resource, Object model, Target<android.graphics.drawable.Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            System.out.println("Successfully loaded image: " + imageUrl);
+                            return false;
+                        }
+                    })
+                    .into(holder.imgProduct);
+        } else {
+            // Use placeholder for sample/empty URLs
+            holder.imgProduct.setImageResource(R.drawable.image_placeholder);
+        }
 
         // Set click listeners
         holder.itemView.setOnClickListener(v -> {

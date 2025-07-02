@@ -15,6 +15,8 @@ import com.example.projectprmexe.data.model.Product.ProductDto;
 import com.example.projectprmexe.data.model.Product.ProductImageDto;
 import com.example.projectprmexe.data.repository.ProductInstance;
 import com.example.projectprmexe.ui.adapter.ProductImageAdapter;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -118,8 +120,20 @@ public class ProductDetailActivity extends AppCompatActivity {
             txtCreatedAt.setText("Ngày tạo: Không có thông tin");
         }
 
-        // Set main image (placeholder for now)
-        imgMainProduct.setImageResource(R.drawable.ic_launcher_foreground);
+        // Set main image using Glide
+        String mainImageUrl = product.getFirstImageUrl();
+        System.out.println("Loading main image for " + product.getName() + ": " + mainImageUrl);
+        if (mainImageUrl != null && !mainImageUrl.isEmpty() && !mainImageUrl.equals("sample_image_url")) {
+            Glide.with(this)
+                    .load(mainImageUrl)
+                    .placeholder(R.drawable.image_placeholder)
+                    .error(R.drawable.image_placeholder)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imgMainProduct);
+        } else {
+            // Use placeholder for sample/empty URLs
+            imgMainProduct.setImageResource(R.drawable.image_placeholder);
+        }
 
         // Load additional images
         if (product.getImages() != null && !product.getImages().isEmpty()) {

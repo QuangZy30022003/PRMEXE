@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectprmexe.R;
 import com.example.projectprmexe.data.model.Product.ProductImageDto;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
@@ -32,10 +34,20 @@ public class ProductImageAdapter extends RecyclerView.Adapter<ProductImageAdapte
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         ProductImageDto image = imageList.get(position);
         
-        // For now, using placeholder image
-        // In a real app, you'd load the actual image using Glide or Picasso:
-        // Glide.with(holder.itemView.getContext()).load(image.getImageUrl()).into(holder.imageView);
-        holder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
+        // Load image using Glide
+        String imageUrl = image.getImageUrl();
+        System.out.println("Loading additional image " + position + ": " + imageUrl);
+        if (imageUrl != null && !imageUrl.isEmpty() && !imageUrl.startsWith("sample_image")) {
+            Glide.with(holder.itemView.getContext())
+                    .load(imageUrl)
+                    .placeholder(R.drawable.image_placeholder)
+                    .error(R.drawable.image_placeholder)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(holder.imageView);
+        } else {
+            // Use placeholder for sample/empty URLs
+            holder.imageView.setImageResource(R.drawable.image_placeholder);
+        }
     }
 
     @Override
