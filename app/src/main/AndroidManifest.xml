@@ -31,7 +31,7 @@
             android:name=".ui.CartActivity"
             android:exported="false" />
 
-        <!-- Product Activities -->
+        <!-- Product Management Activities (Admin) -->
         <activity
             android:name=".ui.ProductListActivity"
             android:exported="true">
@@ -40,6 +40,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.ProductCreateActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.ProductEditActivity"
+            android:exported="false" />
+
+        <!-- Product Activities (Customer) -->
+        <activity
+            android:name=".ui.ProductManagementActivity"
+            android:exported="false" />
 
         <activity
             android:name=".ui.ProductDetailActivity"
