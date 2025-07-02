@@ -39,4 +39,14 @@ public interface ProductAPI {
     @DELETE("api/Products/{id}")
     Call<ResponseBody> deleteProduct(@Path("id") int id,
                                      @Header("Authorization") String token);
+
+    // Testing versions without authorization (remove when auth is implemented)
+    @POST("api/Products")
+    Call<ProductCreateUpdateDto> createProduct(@Body ProductCreateUpdateDto product);
+
+    @PUT("api/Products/{id}")
+    Call<Void> updateProduct(@Path("id") int id, @Body ProductCreateUpdateDto product);
+
+    @DELETE("api/Products/{id}")
+    Call<Void> deleteProduct(@Path("id") int id);
 }

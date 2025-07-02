@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <!-- Product Image -->
+        <ImageView
+            android:id="@+id/imgProductManagement"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="16dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/image_placeholder_background"
+            android:src="@drawable/image_placeholder" />
+
+        <!-- Product Info -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="4dp">
+
+                <TextView
+                    android:id="@+id/txtProductManagementName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Product Name"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#2C3E50" />
+
+                <TextView
+                    android:id="@+id/txtProductManagementId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ID: 1"
+                    android:textSize="12sp"
+                    android:textColor="#95A5A6"
+                    android:background="#ECEFF1"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtProductManagementDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Product description..."
+                android:textSize="14sp"
+                android:textColor="#7F8C8D"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:id="@+id/txtProductManagementPrice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="50,000 VND"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#E74C3C" />
+
+                <TextView
+                    android:id="@+id/txtProductManagementAvailability"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Available"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/availability_background"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp" />
+
+            </LinearLayout>
+
+            <!-- Action Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end">
+
+                <Button
+                    android:id="@+id/btnViewProduct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="View"
+                    android:textSize="12sp"
+                    android:backgroundTint="#3498DB"
+                    android:textColor="@android:color/white"
+                    android:layout_marginEnd="8dp"
+                    style="@style/Widget.Material3.Button" />
+
+                <Button
+                    android:id="@+id/btnEditProduct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="Edit"
+                    android:textSize="12sp"
+                    android:backgroundTint="#F39C12"
+                    android:textColor="@android:color/white"
+                    android:layout_marginEnd="8dp"
+                    style="@style/Widget.Material3.Button" />
+
+                <Button
+                    android:id="@+id/btnDeleteProduct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="Delete"
+                    android:textSize="12sp"
+                    android:backgroundTint="#E74C3C"
+                    android:textColor="@android:color/white"
+                    style="@style/Widget.Material3.Button" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
