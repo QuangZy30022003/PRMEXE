@@ -20,7 +20,12 @@
         <!-- LoginActivity làm launcher activity -->
         <activity
             android:name=".LoginActivity"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!-- RegisterActivity -->
         <activity
@@ -34,12 +39,7 @@
         <!-- Product Management Activities (Admin) -->
         <activity
             android:name=".ui.ProductListActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
 
         <activity
             android:name=".ui.ProductCreateActivity"
@@ -58,7 +58,7 @@
             android:name=".ui.ProductDetailActivity"
             android:exported="false" />
 
-        <!-- �"� MainActivity không cần intent-filter -->
+        <!-- MainActivity không cần intent-filter -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />

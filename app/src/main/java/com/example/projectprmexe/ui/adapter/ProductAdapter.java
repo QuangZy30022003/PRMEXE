@@ -5,6 +5,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ImageButton;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.widget.Toast;
+import com.example.projectprmexe.data.api.CartAPI;
+import com.example.projectprmexe.data.model.Cart.CartItemCreateDTO;
+import com.example.projectprmexe.data.repository.CartInstance;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -103,6 +114,32 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             }
             return true;
         });
+
+        holder.btnAddToCart.setOnClickListener(v -> {
+            Context context = holder.itemView.getContext();
+            SharedPreferences prefs = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+            String token = prefs.getString("token", null);
+            if (token == null) {
+                Toast.makeText(context, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            CartAPI cartAPI = CartInstance.getApiService();
+            CartItemCreateDTO dto = new CartItemCreateDTO(product.getProductId(), 1);
+            cartAPI.addOrUpdateCart(dto, "Bearer " + token).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(context, "Đã thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Thêm vào giỏ hàng thất bại!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(context, "Lỗi kết nối!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 
     @Override
@@ -113,6 +150,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     static class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView imgProduct;
         TextView txtName, txtDescription, txtPrice, txtAvailability;
+        ImageButton btnAddToCart;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -121,6 +159,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             txtDescription = itemView.findViewById(R.id.txtProductDescription);
             txtPrice = itemView.findViewById(R.id.txtProductPrice);
             txtAvailability = itemView.findViewById(R.id.txtProductAvailability);
+            btnAddToCart = itemView.findViewById(R.id.btnAddToCart);
         }
     }
 }
