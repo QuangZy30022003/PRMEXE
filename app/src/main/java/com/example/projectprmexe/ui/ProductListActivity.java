@@ -17,6 +17,7 @@ import com.example.projectprmexe.data.api.ProductAPI;
 import com.example.projectprmexe.data.model.Product.ProductDto;
 import com.example.projectprmexe.data.repository.ProductInstance;
 import com.example.projectprmexe.ui.adapter.ProductAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,12 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
         setupRecyclerView();
         setupSearch();
         loadProducts();
+
+        FloatingActionButton fabCart = findViewById(R.id.fabCart);
+        fabCart.setOnClickListener(v -> {
+            Intent intent = new Intent(ProductListActivity.this, com.example.projectprmexe.ui.CartActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void initViews() {

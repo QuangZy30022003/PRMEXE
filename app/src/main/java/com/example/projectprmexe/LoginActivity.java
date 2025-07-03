@@ -1,6 +1,7 @@
 package com.example.projectprmexe;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -28,6 +29,20 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Xóa token mỗi khi mở LoginActivity
+        SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        prefs.edit().remove("token").apply();
+
+        // Kiểm tra nếu đã đăng nhập (có token) thì chuyển sang CartActivity luôn
+        String token = prefs.getString("token", null);
+        if (token != null && !token.isEmpty()) {
+            Intent intent = new Intent(LoginActivity.this, com.example.projectprmexe.ui.CartActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return;
+        }
 
         // Khởi tạo views
         initViews();
@@ -101,10 +116,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    // Lưu token
+                    String token = response.body().getToken();
+                    SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                    prefs.edit().putString("token", token).apply();
+
                     Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                    // Lưu token nếu cần: response.body().getToken()
-                    // Chuyển sang MainActivity
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    // Chuyển sang ProductListActivity
+                    Intent intent = new Intent(LoginActivity.this, com.example.projectprmexe.ui.ProductListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
