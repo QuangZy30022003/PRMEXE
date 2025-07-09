@@ -2,8 +2,10 @@ package com.example.projectprmexe.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.TextView;
 
@@ -13,10 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectprmexe.R;
 import com.example.projectprmexe.data.api.CartAPI;
+import com.example.projectprmexe.data.api.OrderAPI;
 import com.example.projectprmexe.data.api.ProductAPI;
 import com.example.projectprmexe.data.model.Cart.CartItemResponseDTO;
+import com.example.projectprmexe.data.model.Cart.OrderFromCartDTO;
+import com.example.projectprmexe.data.model.Cart.OrderResponse;
 import com.example.projectprmexe.data.model.Product.ProductDto;
 import com.example.projectprmexe.data.repository.CartInstance;
+import com.example.projectprmexe.data.repository.OrderInstance;
 import com.example.projectprmexe.data.repository.ProductInstance;
 import com.example.projectprmexe.ui.adapter.CartAdapter;
 import com.example.projectprmexe.LoginActivity;
@@ -40,6 +46,8 @@ public class CartActivity extends AppCompatActivity {
     private Button btnCheckout;
     private Map<Integer, Double> productPriceMap = new HashMap<>();
     private String token;
+    private EditText edtDeliveryAddress, edtNote, edtPromotionCode;
+    private int lastOrderCode = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +61,50 @@ public class CartActivity extends AppCompatActivity {
 
         txtCartTotal = findViewById(R.id.txtCartTotal);
         btnCheckout = findViewById(R.id.btnCheckout);
+        edtDeliveryAddress = findViewById(R.id.edtDeliveryAddress);
+        edtNote = findViewById(R.id.edtNote);
+        edtPromotionCode = findViewById(R.id.edtPromotionCode);
         btnCheckout.setOnClickListener(v -> {
-            Toast.makeText(this, "Chức năng thanh toán đang phát triển!", Toast.LENGTH_SHORT).show();
+            // Lấy danh sách id cart item
+            List<Integer> selectedCartItemIds = new ArrayList<>();
+            for (CartItemResponseDTO item : cartItems) {
+                selectedCartItemIds.add(item.getId());
+            }
+            String address = edtDeliveryAddress.getText().toString().trim();
+            String note = edtNote.getText().toString().trim();
+            String promotionCode = edtPromotionCode.getText().toString().trim();
+            if (address.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập địa chỉ nhận hàng!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            OrderFromCartDTO dto = new OrderFromCartDTO(selectedCartItemIds, address, note, promotionCode);
+            OrderAPI orderAPI = OrderInstance.getApiService();
+            btnCheckout.setEnabled(false);
+            orderAPI.createOrderFromCart("Bearer " + token, dto).enqueue(new retrofit2.Callback<OrderResponse>() {
+                @Override
+                public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+                    btnCheckout.setEnabled(true);
+                    if (response.isSuccessful() && response.body() != null) {
+                        String paymentUrl = response.body().getPaymentUrl();
+                        lastOrderCode = response.body().getPayOSOrderCode(); // Lưu lại orderCode
+                        android.util.Log.d("PAYMENT_URL", "paymentUrl = " + paymentUrl);
+                        if (paymentUrl == null || paymentUrl.isEmpty()) {
+                            Toast.makeText(CartActivity.this, "Không nhận được link thanh toán từ server! Đơn hàng có thể đã được xử lý hoặc có lỗi.", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(paymentUrl));
+                        startActivity(browserIntent);
+                        // Sau khi mở link thanh toán, chờ user quay lại app rồi gọi callback test
+                    } else {
+                        Toast.makeText(CartActivity.this, "Tạo đơn hàng thất bại!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<OrderResponse> call, Throwable t) {
+                    btnCheckout.setEnabled(true);
+                    Toast.makeText(CartActivity.this, "Lỗi kết nối!", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
 
         // Lấy token từ SharedPreferences
@@ -127,5 +177,31 @@ public class CartActivity extends AppCompatActivity {
             total += price * item.getQuantity();
         }
         txtCartTotal.setText("Tổng: " + String.format("%.0f VND", total));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Nếu vừa tạo đơn hàng và có orderCode, tự động gọi test callback
+        if (lastOrderCode > 0) {
+            callTestPaymentCallback(lastOrderCode);
+            lastOrderCode = -1;
+        }
+    }
+
+    private void callTestPaymentCallback(int orderCode) {
+        // Gọi API test-payment-callback để cập nhật trạng thái đơn hàng
+        new Thread(() -> {
+            try {
+                java.net.URL url = new java.net.URL("http://10.0.2.2:5150/api/Orders/test-payment-callback?orderCode=" + orderCode + "&status=success");
+                java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                int responseCode = conn.getResponseCode();
+                android.util.Log.d("CALLBACK", "Test callback response: " + responseCode);
+                conn.disconnect();
+            } catch (Exception e) {
+                android.util.Log.e("CALLBACK", "Error calling test callback", e);
+            }
+        }).start();
     }
 }
