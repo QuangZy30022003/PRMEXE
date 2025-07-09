@@ -19,6 +19,36 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <LinearLayout
+        android:id="@+id/layoutInputInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="#FFF"
+        app:layout_constraintBottom_toTopOf="@id/layoutBottomBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <EditText
+            android:id="@+id/edtDeliveryAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Địa chỉ nhận hàng"/>
+
+        <EditText
+            android:id="@+id/edtNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ghi chú (tuỳ chọn)"/>
+
+        <EditText
+            android:id="@+id/edtPromotionCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mã giảm giá (nếu có)"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/layoutBottomBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
