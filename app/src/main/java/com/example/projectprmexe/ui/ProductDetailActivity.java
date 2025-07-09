@@ -17,6 +17,7 @@ import com.example.projectprmexe.data.repository.ProductInstance;
 import com.example.projectprmexe.ui.adapter.ProductImageAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,6 +42,11 @@ public class ProductDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         // Get product ID from intent
         productId = getIntent().getIntExtra("product_id", -1);
@@ -157,5 +163,11 @@ public class ProductDetailActivity extends AppCompatActivity {
         sampleProduct.setImages(sampleImages);
         
         displayProductDetail(sampleProduct);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }

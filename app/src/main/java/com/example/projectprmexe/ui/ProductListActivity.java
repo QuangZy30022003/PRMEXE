@@ -1,6 +1,7 @@
 package com.example.projectprmexe.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,6 +19,7 @@ import com.example.projectprmexe.data.model.Product.ProductDto;
 import com.example.projectprmexe.data.repository.ProductInstance;
 import com.example.projectprmexe.ui.adapter.ProductAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,25 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_list);
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        // Xử lý deep link payment-result
+        Uri data = getIntent().getData();
+        if (data != null && "payment-result".equals(data.getHost())) {
+            String success = data.getQueryParameter("success");
+            String orderId = data.getQueryParameter("orderId");
+            String amount = data.getQueryParameter("amount");
+            String message = data.getQueryParameter("message");
+            String resultMsg = "Kết quả thanh toán: " + ("true".equals(success) ? "THÀNH CÔNG" : "THẤT BẠI") +
+                    "\nMã đơn: " + orderId +
+                    (amount != null ? ("\nSố tiền: " + amount) : "") +
+                    (message != null ? ("\n" + message) : "");
+            Toast.makeText(this, resultMsg, Toast.LENGTH_LONG).show();
+        }
 
         initViews();
         setupRecyclerView();
@@ -156,5 +177,11 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
     public void onProductLongClick(ProductDto product) {
         // Long click could be used for admin actions in the future
         Toast.makeText(this, "Long clicked: " + product.getName(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }

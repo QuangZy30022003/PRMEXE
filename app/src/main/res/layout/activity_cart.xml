@@ -8,45 +8,24 @@
     android:layout_height="match_parent"
     tools:context=".ui.CartActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:title="Giỏ Hàng"
+        android:titleTextColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerCart"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="16dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toTopOf="@id/layoutBottomBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-
-    <LinearLayout
-        android:id="@+id/layoutInputInfo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="#FFF"
-        app:layout_constraintBottom_toTopOf="@id/layoutBottomBar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <EditText
-            android:id="@+id/edtDeliveryAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Địa chỉ nhận hàng"/>
-
-        <EditText
-            android:id="@+id/edtNote"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Ghi chú (tuỳ chọn)"/>
-
-        <EditText
-            android:id="@+id/edtPromotionCode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Mã giảm giá (nếu có)"/>
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layoutBottomBar"

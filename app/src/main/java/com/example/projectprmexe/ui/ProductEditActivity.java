@@ -14,6 +14,7 @@ import com.example.projectprmexe.data.api.ProductAPI;
 import com.example.projectprmexe.data.model.Product.ProductCreateUpdateDto;
 import com.example.projectprmexe.data.model.Product.ProductDto;
 import com.example.projectprmexe.data.repository.ProductInstance;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,6 +33,11 @@ public class ProductEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_edit);
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         // Get product info from intent
         productId = getIntent().getIntExtra("product_id", -1);
@@ -46,6 +52,12 @@ public class ProductEditActivity extends AppCompatActivity {
         initViews();
         setupClickListeners();
         loadProductData();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     private void initViews() {
