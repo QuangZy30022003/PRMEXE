@@ -26,6 +26,8 @@ import com.example.projectprmexe.data.repository.OrderInstance;
 import com.example.projectprmexe.data.repository.ProductInstance;
 import com.example.projectprmexe.ui.adapter.CartAdapter;
 import com.example.projectprmexe.LoginActivity;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,11 +50,17 @@ public class CartActivity extends AppCompatActivity {
     private String token;
     private EditText edtDeliveryAddress, edtNote, edtPromotionCode;
     private int lastOrderCode = -1;
+    private boolean isInputFormVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         recyclerView = findViewById(R.id.recyclerCart);
         adapter = new CartAdapter(cartItems, this::updateCartTotal);
@@ -61,52 +69,10 @@ public class CartActivity extends AppCompatActivity {
 
         txtCartTotal = findViewById(R.id.txtCartTotal);
         btnCheckout = findViewById(R.id.btnCheckout);
+        btnCheckout.setOnClickListener(v -> showCheckoutDialog());
         edtDeliveryAddress = findViewById(R.id.edtDeliveryAddress);
         edtNote = findViewById(R.id.edtNote);
         edtPromotionCode = findViewById(R.id.edtPromotionCode);
-        btnCheckout.setOnClickListener(v -> {
-            // Lấy danh sách id cart item
-            List<Integer> selectedCartItemIds = new ArrayList<>();
-            for (CartItemResponseDTO item : cartItems) {
-                selectedCartItemIds.add(item.getId());
-            }
-            String address = edtDeliveryAddress.getText().toString().trim();
-            String note = edtNote.getText().toString().trim();
-            String promotionCode = edtPromotionCode.getText().toString().trim();
-            if (address.isEmpty()) {
-                Toast.makeText(this, "Vui lòng nhập địa chỉ nhận hàng!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            OrderFromCartDTO dto = new OrderFromCartDTO(selectedCartItemIds, address, note, promotionCode);
-            OrderAPI orderAPI = OrderInstance.getApiService();
-            btnCheckout.setEnabled(false);
-            orderAPI.createOrderFromCart("Bearer " + token, dto).enqueue(new retrofit2.Callback<OrderResponse>() {
-                @Override
-                public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
-                    btnCheckout.setEnabled(true);
-                    if (response.isSuccessful() && response.body() != null) {
-                        String paymentUrl = response.body().getPaymentUrl();
-                        lastOrderCode = response.body().getPayOSOrderCode(); // Lưu lại orderCode
-                        android.util.Log.d("PAYMENT_URL", "paymentUrl = " + paymentUrl);
-                        if (paymentUrl == null || paymentUrl.isEmpty()) {
-                            Toast.makeText(CartActivity.this, "Không nhận được link thanh toán từ server! Đơn hàng có thể đã được xử lý hoặc có lỗi.", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(paymentUrl));
-                        startActivity(browserIntent);
-                        // Sau khi mở link thanh toán, chờ user quay lại app rồi gọi callback test
-                    } else {
-                        Toast.makeText(CartActivity.this, "Tạo đơn hàng thất bại!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                @Override
-                public void onFailure(Call<OrderResponse> call, Throwable t) {
-                    btnCheckout.setEnabled(true);
-                    Toast.makeText(CartActivity.this, "Lỗi kết nối!", Toast.LENGTH_SHORT).show();
-                }
-            });
-        });
-
         // Lấy token từ SharedPreferences
         SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         token = prefs.getString("token", null);
@@ -116,6 +82,64 @@ public class CartActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void showCheckoutDialog() {
+        BottomSheetDialog dialog = new BottomSheetDialog(this);
+        android.view.View view = getLayoutInflater().inflate(R.layout.dialog_checkout_info, null);
+        EditText edtDeliveryAddress = view.findViewById(R.id.edtDeliveryAddress);
+        EditText edtNote = view.findViewById(R.id.edtNote);
+        EditText edtPromotionCode = view.findViewById(R.id.edtPromotionCode);
+        Button btnConfirm = view.findViewById(R.id.btnConfirmCheckout);
+        TextView txtTotal = view.findViewById(R.id.txtDialogCartTotal);
+        txtTotal.setText(txtCartTotal.getText());
+        dialog.setContentView(view);
+        btnConfirm.setOnClickListener(v -> {
+            String address = edtDeliveryAddress.getText().toString().trim();
+            String note = edtNote.getText().toString().trim();
+            String promotionCode = edtPromotionCode.getText().toString().trim();
+            if (address.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập địa chỉ nhận hàng!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            dialog.dismiss();
+            createOrderAndCheckout(address, note, promotionCode);
+        });
+        dialog.show();
+    }
+
+    private void createOrderAndCheckout(String address, String note, String promotionCode) {
+        List<Integer> selectedCartItemIds = new ArrayList<>();
+        for (CartItemResponseDTO item : cartItems) {
+            selectedCartItemIds.add(item.getId());
+        }
+        OrderFromCartDTO dto = new OrderFromCartDTO(selectedCartItemIds, address, note, promotionCode);
+        OrderAPI orderAPI = OrderInstance.getApiService();
+        btnCheckout.setEnabled(false);
+        orderAPI.createOrderFromCart("Bearer " + token, dto).enqueue(new retrofit2.Callback<OrderResponse>() {
+            @Override
+            public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+                btnCheckout.setEnabled(true);
+                if (response.isSuccessful() && response.body() != null) {
+                    String paymentUrl = response.body().getPaymentUrl();
+                    lastOrderCode = response.body().getPayOSOrderCode();
+                    android.util.Log.d("PAYMENT_URL", "paymentUrl = " + paymentUrl);
+                    if (paymentUrl == null || paymentUrl.isEmpty()) {
+                        Toast.makeText(CartActivity.this, "Không nhận được link thanh toán từ server! Đơn hàng có thể đã được xử lý hoặc có lỗi.", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(paymentUrl));
+                    startActivity(browserIntent);
+                } else {
+                    Toast.makeText(CartActivity.this, "Tạo đơn hàng thất bại!", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<OrderResponse> call, Throwable t) {
+                btnCheckout.setEnabled(true);
+                Toast.makeText(CartActivity.this, "Lỗi kết nối!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void loadAllProductsAndCart() {
@@ -203,5 +227,11 @@ public class CartActivity extends AppCompatActivity {
                 android.util.Log.e("CALLBACK", "Error calling test callback", e);
             }
         }).start();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }

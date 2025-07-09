@@ -19,6 +19,7 @@ import com.example.projectprmexe.data.model.Product.ProductDto;
 import com.example.projectprmexe.data.repository.ProductInstance;
 import com.example.projectprmexe.ui.adapter.ProductManagementAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,11 @@ public class ProductManagementActivity extends AppCompatActivity implements Prod
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_management);
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         initViews();
         setupRecyclerView();
@@ -206,5 +212,11 @@ public class ProductManagementActivity extends AppCompatActivity implements Prod
         super.onResume();
         // Refresh products when returning from create/edit activities
         loadProducts();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }

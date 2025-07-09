@@ -13,6 +13,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:title="Chi Tiết Sản Phẩm"
+            android:titleTextColor="@android:color/white"/>
+
         <!-- Main Product Image -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -172,5 +180,4 @@
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>
-
 </ScrollView>
