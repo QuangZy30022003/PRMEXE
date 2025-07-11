@@ -32,6 +32,11 @@
             android:name=".RegisterActivity"
             android:exported="false" />
 
+        <!-- ProfileActivity -->
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+
         <activity
             android:name=".ui.CartActivity"
             android:exported="false" />
