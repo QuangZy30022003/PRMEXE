@@ -58,6 +58,18 @@
             android:textStyle="bold"
             android:backgroundTint="#E74C3C"
             android:drawableStart="@android:drawable/ic_menu_add"
+            android:drawablePadding="12dp"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnProfile"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Thông tin cá nhân"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:backgroundTint="#9B59B6"
+            android:drawableStart="@android:drawable/ic_menu_myplaces"
             android:drawablePadding="12dp" />
 
     </LinearLayout>

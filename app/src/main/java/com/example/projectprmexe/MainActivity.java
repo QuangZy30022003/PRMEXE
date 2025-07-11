@@ -15,7 +15,7 @@ import com.example.projectprmexe.ui.ProductListActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnProducts, btnCart;
+    private Button btnProducts, btnCart, btnProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private void initViews() {
         btnProducts = findViewById(R.id.btnProducts);
         btnCart = findViewById(R.id.btnCart);
+        btnProfile = findViewById(R.id.btnProfile);
     }
 
     private void setupClickListeners() {
@@ -45,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
 
         btnCart.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, CartActivity.class);
+            startActivity(intent);
+        });
+
+        btnProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             startActivity(intent);
         });
     }
