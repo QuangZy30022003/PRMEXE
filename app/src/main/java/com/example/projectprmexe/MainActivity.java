@@ -18,8 +18,12 @@ import com.example.projectprmexe.ui.ProductListActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+<<<<<<< HEAD
     private Button btnShowProducts, btnLogin, btnRegister, btnCart, btnLogout;
     private TextView tvUserStatus;
+=======
+    private Button btnProducts, btnCart, btnProfile;
+>>>>>>> 24f394e77be1a3f455c53f464adb6edb903a4e1b
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +45,14 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister);
         btnCart = findViewById(R.id.btnCart);
+<<<<<<< HEAD
         btnLogout = findViewById(R.id.btnLogout);
         tvUserStatus = findViewById(R.id.tvUserStatus);
         
         updateUIBasedOnLoginStatus();
+=======
+        btnProfile = findViewById(R.id.btnProfile);
+>>>>>>> 24f394e77be1a3f455c53f464adb6edb903a4e1b
     }
 
     private void setupClickListeners() {
@@ -77,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+<<<<<<< HEAD
         // Nút giỏ hàng - cần đăng nhập
         btnCart.setOnClickListener(v -> {
             SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
@@ -128,5 +137,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateUIBasedOnLoginStatus();
+=======
+        btnProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        });
+>>>>>>> 24f394e77be1a3f455c53f464adb6edb903a4e1b
     }
 }
