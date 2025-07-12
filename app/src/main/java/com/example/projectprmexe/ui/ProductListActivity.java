@@ -113,8 +113,6 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
     }
 
     private void loadProducts() {
-        Toast.makeText(this, "Starting API call...", Toast.LENGTH_SHORT).show();
-        
         ProductAPI api = ProductInstance.getApiService();
         Call<List<ProductDto>> call = api.getAllProducts();
         

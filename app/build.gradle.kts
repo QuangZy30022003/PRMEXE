@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace = "com.example.projectprmexe"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.projectprmexe"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -33,6 +33,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
 }
 
 dependencies {
@@ -41,12 +47,12 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation(libs.ui.graphics.android)
+    // implementation(libs.ui.graphics.android)  // Removed - requires compileSdk 35
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation(libs.recyclerview)
-    implementation(libs.cronet.embedded)
+    // implementation(libs.cronet.embedded)  // Temporarily commented out to fix ELF alignment issue
     implementation("androidx.cardview:cardview:1.0.0")
     // Image loading library
     implementation("com.github.bumptech.glide:glide:4.16.0")

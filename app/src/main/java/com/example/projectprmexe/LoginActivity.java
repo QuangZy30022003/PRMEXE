@@ -30,14 +30,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Xóa token mỗi khi mở LoginActivity
+        // Kiểm tra nếu đã đăng nhập (có token) thì chuyển sang ProductListActivity luôn
         SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        prefs.edit().remove("token").apply();
-
-        // Kiểm tra nếu đã đăng nhập (có token) thì chuyển sang CartActivity luôn
         String token = prefs.getString("token", null);
         if (token != null && !token.isEmpty()) {
-            Intent intent = new Intent(LoginActivity.this, com.example.projectprmexe.ui.CartActivity.class);
+            Intent intent = new Intent(LoginActivity.this, com.example.projectprmexe.ui.ProductListActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
@@ -109,7 +106,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
         // Gọi API login
-
         LoginRequest request = new LoginRequest(email, password);
         Call<LoginResponse> call = authApi.login(request);
         call.enqueue(new Callback<LoginResponse>() {
