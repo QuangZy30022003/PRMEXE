@@ -1,8 +1,11 @@
 package com.example.projectprmexe;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,18 +17,15 @@ import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.example.projectprmexe.ui.CartActivity;
 import com.example.projectprmexe.ui.ProductListActivity;
+import com.example.projectprmexe.ui.ProductManagementActivity;
+import com.example.projectprmexe.ui.PromotionCreateActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-<<<<<<< Updated upstream
-    private Button btnProducts, btnCart;
-=======
-    private Button btnShowProducts, btnLogin, btnRegister, btnCart, btnLogout;
+    private Button btnShowProducts, btnLogin, btnRegister, btnCart, btnLogout, btnProfile;
+    private Button btnProductManagement, btnCreatePromotion;
     private TextView tvUserStatus;
     private ActivityResultLauncher<Intent> loginLauncher;
-    private Button btnProductManagement;
-    private Button btnCreatePromotion;
->>>>>>> Stashed changes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +38,13 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Đăng ký launcher cho đăng nhập
         loginLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == RESULT_OK) {
-                    updateUIBasedOnLoginStatus();
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        updateUIBasedOnLoginStatus();
+                    }
                 }
-            }
         );
 
         initViews();
@@ -53,66 +52,51 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        btnProducts = findViewById(R.id.btnProducts);
+        btnShowProducts = findViewById(R.id.btnShowProducts);
+        btnLogin = findViewById(R.id.btnLogin);
+        btnRegister = findViewById(R.id.btnRegister);
         btnCart = findViewById(R.id.btnCart);
-<<<<<<< Updated upstream
-    }
-
-    private void setupClickListeners() {
-        btnProducts.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, ProductListActivity.class);
-            startActivity(intent);
-        });
-
-        btnCart.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, CartActivity.class);
-            startActivity(intent);
-        });
-=======
         btnLogout = findViewById(R.id.btnLogout);
-        tvUserStatus = findViewById(R.id.tvUserStatus);
-        btnProductManagement = findViewById(R.id.btnProductManagement); // Thêm dòng này
+        btnProfile = findViewById(R.id.btnProfile);
+        btnProductManagement = findViewById(R.id.btnProductManagement);
         btnCreatePromotion = findViewById(R.id.btnCreatePromotion);
+        tvUserStatus = findViewById(R.id.tvUserStatus);
+
         if (btnProductManagement != null) btnProductManagement.setVisibility(android.view.View.GONE);
         if (btnCreatePromotion != null) btnCreatePromotion.setVisibility(android.view.View.GONE);
+
         updateUIBasedOnLoginStatus();
     }
 
     private void setupClickListeners() {
-        // Nút xem sản phẩm - kiểm tra đăng nhập
         btnShowProducts.setOnClickListener(v -> {
             SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
             String token = prefs.getString("token", null);
-            
+
             if (token != null && !token.isEmpty()) {
-                // Đã đăng nhập, chuyển đến ProductList
                 Intent intent = new Intent(MainActivity.this, ProductListActivity.class);
                 startActivity(intent);
             } else {
-                // Chưa đăng nhập, yêu cầu đăng nhập
                 Toast.makeText(MainActivity.this, "Vui lòng đăng nhập để xem sản phẩm!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 loginLauncher.launch(intent);
             }
         });
 
-        // Nút đăng nhập
         btnLogin.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             loginLauncher.launch(intent);
         });
 
-        // Nút đăng ký
         btnRegister.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
 
-        // Nút giỏ hàng - cần đăng nhập
         btnCart.setOnClickListener(v -> {
             SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
             String token = prefs.getString("token", null);
-            
+
             if (token != null && !token.isEmpty()) {
                 Intent intent = new Intent(MainActivity.this, CartActivity.class);
                 startActivity(intent);
@@ -122,58 +106,66 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        
-        // Nút đăng xuất
+
+        btnProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        });
+
         btnLogout.setOnClickListener(v -> {
             SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-            prefs.edit().remove("token").apply();
+            prefs.edit().remove("token").remove("role").apply();
             Toast.makeText(MainActivity.this, "Đã đăng xuất thành công!", Toast.LENGTH_SHORT).show();
             updateUIBasedOnLoginStatus();
         });
 
         if (btnProductManagement != null) {
             btnProductManagement.setOnClickListener(v -> {
-                Intent intent = new Intent(MainActivity.this, com.example.projectprmexe.ui.ProductManagementActivity.class);
+                Intent intent = new Intent(MainActivity.this, ProductManagementActivity.class);
                 startActivity(intent);
             });
         }
 
         if (btnCreatePromotion != null) {
             btnCreatePromotion.setOnClickListener(v -> {
-                Intent intent = new Intent(MainActivity.this, com.example.projectprmexe.ui.PromotionCreateActivity.class);
+                Intent intent = new Intent(MainActivity.this, PromotionCreateActivity.class);
                 startActivity(intent);
             });
         }
     }
-    
+
     private void updateUIBasedOnLoginStatus() {
         SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         String token = prefs.getString("token", null);
         String role = prefs.getString("role", "user");
 
         if (token != null && !token.isEmpty()) {
-            if ("4".equals(role)) { // admin
+            // Role-based UI
+            if ("4".equals(role)) { // Admin
                 if (btnProductManagement != null) btnProductManagement.setVisibility(android.view.View.VISIBLE);
                 btnCart.setVisibility(android.view.View.GONE);
                 if (btnCreatePromotion != null) btnCreatePromotion.setVisibility(android.view.View.GONE);
-            } else if ("2".equals(role)) { // staff
+            } else if ("2".equals(role)) { // Staff
                 if (btnProductManagement != null) btnProductManagement.setVisibility(android.view.View.VISIBLE);
                 btnCart.setVisibility(android.view.View.GONE);
-                if (btnCreatePromotion != null) btnCreatePromotion.setVisibility(android.view.View.VISIBLE); // staff có thêm nút này
+                if (btnCreatePromotion != null) btnCreatePromotion.setVisibility(android.view.View.VISIBLE);
             } else {
                 if (btnProductManagement != null) btnProductManagement.setVisibility(android.view.View.GONE);
                 btnCart.setVisibility(android.view.View.VISIBLE);
                 if (btnCreatePromotion != null) btnCreatePromotion.setVisibility(android.view.View.GONE);
             }
+
             tvUserStatus.setText("🌟 Chào mừng bạn trở lại!");
             btnLogin.setVisibility(android.view.View.GONE);
             btnRegister.setVisibility(android.view.View.GONE);
             btnLogout.setVisibility(android.view.View.VISIBLE);
             btnShowProducts.setText("🛍️ Xem Tất Cả Sản Phẩm");
+            btnCart.setText("🛒 Giỏ Hàng Của Tôi");
         } else {
             if (btnProductManagement != null) btnProductManagement.setVisibility(android.view.View.GONE);
             btnCart.setVisibility(android.view.View.VISIBLE);
             if (btnCreatePromotion != null) btnCreatePromotion.setVisibility(android.view.View.GONE);
+
             tvUserStatus.setText("Tài khoản của bạn");
             btnLogin.setVisibility(android.view.View.VISIBLE);
             btnRegister.setVisibility(android.view.View.VISIBLE);
@@ -182,11 +174,10 @@ public class MainActivity extends AppCompatActivity {
             btnCart.setText("🛒 Giỏ Hàng (Cần đăng nhập)");
         }
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();
         updateUIBasedOnLoginStatus();
->>>>>>> Stashed changes
     }
 }

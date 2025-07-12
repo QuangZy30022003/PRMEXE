@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -123,8 +125,6 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
     }
 
     private void loadProducts() {
-        Toast.makeText(this, "Starting API call...", Toast.LENGTH_SHORT).show();
-        
         ProductAPI api = ProductInstance.getApiService();
         Call<List<ProductDto>> call = api.getAllProducts();
         
@@ -193,5 +193,22 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
     public boolean onSupportNavigateUp() {
         finish();
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_profile) {
+            Intent intent = new Intent(this, com.example.projectprmexe.ProfileActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

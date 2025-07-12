@@ -1,66 +1,335 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA"
+    android:background="@drawable/gradient_background"
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="32dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:padding="24dp">
 
+        <!-- Header Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginBottom="32dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🌟 JuiceAndFlower 🌟"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_marginBottom="8dp"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="4" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fresh &amp; Natural"
+                android:textSize="18sp"
+                android:textColor="#E8F5E8"
+                android:gravity="center"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🥤 Đồ uống tươi mát &amp; Hoa xinh đẹp 🌸\nChất lượng cao - Giá cả hợp lý"
+                android:textSize="14sp"
+                android:textColor="#F0F8F0"
+                android:gravity="center"
+                android:lineSpacingExtra="4dp" />
+
+        </LinearLayout>
+
+        <!-- Product Showcase Cards -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="32dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                android:backgroundTint="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🥤"
+                        android:textSize="32sp"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nước Chanh Leo"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="#2C3E50"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10,000 VNĐ"
+                        android:textSize="11sp"
+                        android:textColor="#E74C3C"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                android:backgroundTint="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🌹"
+                        android:textSize="32sp"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hoa Hồng"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="#2C3E50"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="15,000 VNĐ"
+                        android:textSize="11sp"
+                        android:textColor="#E74C3C"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <!-- Main Action Button -->
+        <Button
+            android:id="@+id/btnShowProducts"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="🛍️ Xem Tất Cả Sản Phẩm"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_gradient"
+            android:layout_marginBottom="16dp"
+            android:elevation="8dp"
+            android:stateListAnimator="@null" />
+
+        <!-- Features Section -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Juice and Flower"
-            android:textSize="32sp"
+            android:text="🌟 Tại sao chọn chúng tôi?"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#2C3E50"
+            android:textColor="#FFFFFF"
             android:gravity="center"
             android:layout_marginBottom="16dp" />
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Welcome to our application!"
-            android:textSize="16sp"
-            android:textColor="#7F8C8D"
-            android:gravity="center"
-            android:layout_marginBottom="48dp" />
+            android:orientation="vertical"
+            android:layout_marginBottom="24dp">
 
-        <Button
-            android:id="@+id/btnProducts"
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                android:backgroundTint="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🌱"
+                        android:textSize="24sp"
+                        android:layout_marginEnd="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100% Tự Nhiên"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="#2C3E50" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Không chất bảo quản, an toàn sức khỏe"
+                            android:textSize="12sp"
+                            android:textColor="#7F8C8D" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                android:backgroundTint="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🚚"
+                        android:textSize="24sp"
+                        android:layout_marginEnd="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Giao Hàng Nhanh"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="#2C3E50" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Đảm bảo tươi ngon khi nhận hàng"
+                            android:textSize="12sp"
+                            android:textColor="#7F8C8D" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <!-- Auth Buttons -->
+        <TextView
+            android:id="@+id/tvUserStatus"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="Product List"
+            android:layout_height="wrap_content"
+            android:text="Tài khoản của bạn"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:backgroundTint="#3498DB"
-            android:layout_marginBottom="16dp"
-            android:drawableStart="@android:drawable/ic_menu_gallery"
-            android:drawablePadding="12dp" />
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
 
-        <Button
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="🔑 Đăng Nhập"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/button_login"
+                android:elevation="4dp"
+                android:stateListAnimator="@null" />
+
+            <Button
+                android:id="@+id/btnRegister"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="📝 Đăng Ký"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/button_register"
+                android:elevation="4dp"
+                android:stateListAnimator="@null" />
+
+        </LinearLayout>
+
+        <!-- Cart Button -->
+            <Button
             android:id="@+id/btnCart"
             android:layout_width="match_parent"
-<<<<<<< Updated upstream
-            android:layout_height="56dp"
-            android:text="Shopping Cart"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:backgroundTint="#E74C3C"
-            android:drawableStart="@android:drawable/ic_menu_add"
-            android:drawablePadding="12dp" />
-=======
             android:layout_height="48dp"
             android:text="🛒 Giỏ Hàng"
             android:textSize="14sp"
@@ -70,7 +339,8 @@
             android:elevation="4dp"
             android:layout_marginBottom="12dp"
             android:stateListAnimator="@null" />
-        
+
+            
         <!-- Logout Button -->
         <Button
             android:id="@+id/btnLogout"
@@ -85,7 +355,22 @@
             android:visibility="gone"
             android:stateListAnimator="@null" />
 
-        <!-- Product Management Button (Admin only) -->
+        <!-- Profile Button -->
+        <Button
+            android:id="@+id/btnProfile"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Thông tin cá nhân"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:backgroundTint="#9B59B6"
+            android:drawableStart="@android:drawable/ic_menu_myplaces"
+            android:drawablePadding="12dp"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="12dp"
+            android:stateListAnimator="@null" />
+        
+     <!-- Product Management Button (Admin only) -->
         <Button
             android:id="@+id/btnProductManagement"
             android:layout_width="match_parent"
@@ -100,7 +385,7 @@
             android:layout_marginTop="8dp"
             android:stateListAnimator="@null" />
 
-        <!-- Create Promotion Button (Staff only) -->
+     <!-- Create Promotion Button (Staff only) -->
         <Button
             android:id="@+id/btnCreatePromotion"
             android:layout_width="match_parent"
@@ -114,8 +399,6 @@
             android:elevation="4dp"
             android:layout_marginTop="8dp"
             android:stateListAnimator="@null" />
->>>>>>> Stashed changes
 
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
