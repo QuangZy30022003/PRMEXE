@@ -17,6 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import com.auth0.android.jwt.JWT;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -103,8 +104,6 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-
-
         // Gọi API login
         LoginRequest request = new LoginRequest(email, password);
         Call<LoginResponse> call = authApi.login(request);
@@ -117,11 +116,21 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
                     prefs.edit().putString("token", token).apply();
 
+                    // Giải mã token để lấy role
+                    String role = "user";
+                    try {
+                        JWT jwt = new JWT(token);
+                        // Lấy claim role đúng key từ JWT
+                        role = jwt.getClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role").asString();
+                        if (role == null) role = "user";
+                    } catch (Exception e) {
+                        role = "user";
+                    }
+                    prefs.edit().putString("role", role).apply();
+
                     Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                    // Chuyển sang ProductListActivity
-                    Intent intent = new Intent(LoginActivity.this, com.example.projectprmexe.ui.ProductListActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
+                    // Trả kết quả về MainActivity
+                    setResult(RESULT_OK);
                     finish();
                 } else {
                     Toast.makeText(LoginActivity.this, "Sai tài khoản hoặc mật khẩu!", Toast.LENGTH_SHORT).show();

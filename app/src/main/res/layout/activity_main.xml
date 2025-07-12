@@ -327,19 +327,19 @@
         </LinearLayout>
 
         <!-- Cart Button -->
-        <Button
+            <Button
             android:id="@+id/btnCart"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:text="🛒 Giỏ Hàng"
             android:textSize="14sp"
             android:textStyle="bold"
-<<<<<<< HEAD
             android:textColor="#FFFFFF"
             android:background="@drawable/button_cart"
             android:elevation="4dp"
             android:layout_marginBottom="12dp"
             android:stateListAnimator="@null" />
+
             
         <!-- Logout Button -->
         <Button
@@ -354,12 +354,8 @@
             android:elevation="4dp"
             android:visibility="gone"
             android:stateListAnimator="@null" />
-=======
-            android:backgroundTint="#E74C3C"
-            android:drawableStart="@android:drawable/ic_menu_add"
-            android:drawablePadding="12dp"
-            android:layout_marginBottom="16dp" />
 
+        <!-- Profile Button -->
         <Button
             android:id="@+id/btnProfile"
             android:layout_width="match_parent"
@@ -369,9 +365,40 @@
             android:textStyle="bold"
             android:backgroundTint="#9B59B6"
             android:drawableStart="@android:drawable/ic_menu_myplaces"
-            android:drawablePadding="12dp" />
->>>>>>> 24f394e77be1a3f455c53f464adb6edb903a4e1b
+            android:drawablePadding="12dp"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="12dp"
+            android:stateListAnimator="@null" />
+        
+     <!-- Product Management Button (Admin only) -->
+        <Button
+            android:id="@+id/btnProductManagement"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="🛠️ Quản lý sản phẩm"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#8e44ad"
+            android:visibility="gone"
+            android:elevation="4dp"
+            android:layout_marginTop="8dp"
+            android:stateListAnimator="@null" />
+
+     <!-- Create Promotion Button (Staff only) -->
+        <Button
+            android:id="@+id/btnCreatePromotion"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="🎁 Tạo mã giảm giá"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#27ae60"
+            android:visibility="gone"
+            android:elevation="4dp"
+            android:layout_marginTop="8dp"
+            android:stateListAnimator="@null" />
 
     </LinearLayout>
-
 </ScrollView>

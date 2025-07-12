@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tạo mã giảm giá"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp" />
+
+        <EditText
+            android:id="@+id/etPromotionCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mã giảm giá" />
+
+        <EditText
+            android:id="@+id/etPromotionDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mô tả" />
+
+        <EditText
+            android:id="@+id/etPromotionDiscountPercent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="% Giảm giá"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/etPromotionMaxDiscount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Giảm tối đa (VNĐ)"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/etPromotionStartDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ngày bắt đầu (yyyy-MM-dd)"
+            android:focusable="false" />
+
+        <EditText
+            android:id="@+id/etPromotionEndDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ngày kết thúc (yyyy-MM-dd)"
+            android:focusable="false" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="24dp">
+
+            <Button
+                android:id="@+id/btnSavePromotion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Lưu" />
+
+            <Button
+                android:id="@+id/btnCancelPromotion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Hủy"
+                android:layout_marginStart="16dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView> 

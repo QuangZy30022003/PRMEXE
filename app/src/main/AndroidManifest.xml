@@ -74,6 +74,11 @@
         <activity
             android:name=".ui.ProductDetailActivity"
             android:exported="false" />
+    <!-- Promotion Activity -->
+        <activity
+            android:name=".ui.PromotionCreateActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
