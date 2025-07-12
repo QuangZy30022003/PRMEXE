@@ -27,6 +27,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import android.content.SharedPreferences;
 
 public class ProductListActivity extends AppCompatActivity implements ProductAdapter.OnProductClickListener {
 
@@ -35,6 +36,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
     private List<ProductDto> productList = new ArrayList<>();
     private List<ProductDto> filteredList = new ArrayList<>();
     private EditText searchEditText;
+    private String role = "user";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,10 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        // Lấy role từ SharedPreferences
+        SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        role = prefs.getString("role", "user");
 
         // Xử lý deep link payment-result
         Uri data = getIntent().getData();
@@ -66,10 +72,14 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
         loadProducts();
 
         FloatingActionButton fabCart = findViewById(R.id.fabCart);
-        fabCart.setOnClickListener(v -> {
-            Intent intent = new Intent(ProductListActivity.this, com.example.projectprmexe.ui.CartActivity.class);
-            startActivity(intent);
-        });
+        if ("4".equals(role)) {
+            fabCart.setVisibility(View.GONE);
+        } else {
+            fabCart.setOnClickListener(v -> {
+                Intent intent = new Intent(ProductListActivity.this, com.example.projectprmexe.ui.CartActivity.class);
+                startActivity(intent);
+            });
+        }
     }
 
     private void initViews() {
@@ -78,7 +88,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
     }
 
     private void setupRecyclerView() {
-        adapter = new ProductAdapter(filteredList, this);
+        adapter = new ProductAdapter(filteredList, this, role);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

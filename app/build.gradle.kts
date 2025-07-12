@@ -55,4 +55,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+<<<<<<< Updated upstream
+=======
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+    implementation("com.auth0.android:jwtdecode:2.0.1")
+>>>>>>> Stashed changes
 }

@@ -36,15 +36,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private List<ProductDto> productList;
     private OnProductClickListener listener;
+    private String role = "user";
 
     public interface OnProductClickListener {
         void onProductClick(ProductDto product);
         void onProductLongClick(ProductDto product);
     }
 
-    public ProductAdapter(List<ProductDto> productList, OnProductClickListener listener) {
+    public ProductAdapter(List<ProductDto> productList, OnProductClickListener listener, String role) {
         this.productList = productList;
         this.listener = listener;
+        this.role = role;
     }
 
     @NonNull
@@ -95,31 +97,37 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             return true;
         });
 
-        holder.btnAddToCart.setOnClickListener(v -> {
-            Context context = holder.itemView.getContext();
-            SharedPreferences prefs = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-            String token = prefs.getString("token", null);
-            if (token == null) {
-                Toast.makeText(context, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            CartAPI cartAPI = CartInstance.getApiService();
-            CartItemCreateDTO dto = new CartItemCreateDTO(product.getProductId(), 1);
-            cartAPI.addOrUpdateCart(dto, "Bearer " + token).enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(context, "Đã thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(context, "Thêm vào giỏ hàng thất bại!", Toast.LENGTH_SHORT).show();
+        // Ẩn nút thêm vào giỏ hàng nếu là admin
+        if ("4".equals(role)) {
+            holder.btnAddToCart.setVisibility(View.GONE);
+        } else {
+            holder.btnAddToCart.setVisibility(View.VISIBLE);
+            holder.btnAddToCart.setOnClickListener(v -> {
+                Context context = holder.itemView.getContext();
+                SharedPreferences prefs = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                String token = prefs.getString("token", null);
+                if (token == null) {
+                    Toast.makeText(context, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                CartAPI cartAPI = CartInstance.getApiService();
+                CartItemCreateDTO dto = new CartItemCreateDTO(product.getProductId(), 1);
+                cartAPI.addOrUpdateCart(dto, "Bearer " + token).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            Toast.makeText(context, "Đã thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "Thêm vào giỏ hàng thất bại!", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(context, "Lỗi kết nối!", Toast.LENGTH_SHORT).show();
-                }
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Toast.makeText(context, "Lỗi kết nối!", Toast.LENGTH_SHORT).show();
+                    }
+                });
             });
-        });
+        }
     }
 
     @Override

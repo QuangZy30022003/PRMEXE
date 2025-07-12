@@ -65,10 +65,14 @@
             android:name=".ui.ProductDetailActivity"
             android:exported="false" />
 
+<<<<<<< Updated upstream
         <!-- MainActivity không cần intent-filter -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+=======
+        <activity android:name=".ui.PromotionCreateActivity" />
+>>>>>>> Stashed changes
     </application>
 
 </manifest>
