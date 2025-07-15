@@ -58,6 +58,20 @@
             </intent-filter>
         </activity>
 
+        <!-- User Management Activities (Admin) -->
+        <activity
+            android:name=".UserManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserStatisticsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChangeRoleActivity"
+            android:exported="false" />
+
         <activity
             android:name=".ui.ProductCreateActivity"
             android:exported="false" />
