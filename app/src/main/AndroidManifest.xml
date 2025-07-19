@@ -79,6 +79,8 @@
             android:name=".ui.PromotionCreateActivity"
             android:exported="false" />
 
+        <activity android:name=".ui.PayOSWebViewActivity" />
+
     </application>
 
 </manifest>
