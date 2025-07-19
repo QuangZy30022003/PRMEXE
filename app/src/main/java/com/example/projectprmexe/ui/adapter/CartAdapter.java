@@ -96,6 +96,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                             if (newQuantity < 1) newQuantity = 1;
                             double newTotal = product.getPrice() * newQuantity;
                             holder.txtTotalPrice.setText("Tổng: " + String.format("%.0f VND", newTotal));
+                            item.setQuantity(newQuantity); // Cập nhật số lượng vào model
+                            if (onCartChangedListener != null) {
+                                onCartChangedListener.onCartChanged();
+                            }
                         }
                         @Override
                         public void afterTextChanged(Editable s) {}

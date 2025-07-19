@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PromotionInstance {
     private static PromotionAPI apiService;
 
-    public static PromotionAPI getApiService() {s
+    public static PromotionAPI getApiService() {
         if (apiService == null) {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("http://10.0.2.2:5150/") // Đổi thành baseUrl của bạn nếu khác
