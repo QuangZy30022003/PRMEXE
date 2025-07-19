@@ -130,8 +130,12 @@ public class CartActivity extends AppCompatActivity {
                         Toast.makeText(CartActivity.this, "Không nhận được link thanh toán từ server! Đơn hàng có thể đã được xử lý hoặc có lỗi.", Toast.LENGTH_LONG).show();
                         return;
                     }
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(paymentUrl));
-                    startActivity(browserIntent);
+                    // Sử dụng WebView thay vì mở trình duyệt ngoài
+                    Intent webViewIntent = new Intent(CartActivity.this, PayOSWebViewActivity.class);
+                    webViewIntent.putExtra(PayOSWebViewActivity.EXTRA_PAYMENT_URL, paymentUrl);
+                    // Truyền returnUrl, ví dụ lấy từ cấu hình hoặc hardcode cho test
+                    webViewIntent.putExtra(PayOSWebViewActivity.EXTRA_RETURN_URL, "http://10.0.2.2:5173/payment-result");
+                    startActivityForResult(webViewIntent, 1001);
                 } else {
                     Toast.makeText(CartActivity.this, "Tạo đơn hàng thất bại!", Toast.LENGTH_SHORT).show();
                 }
@@ -229,6 +233,20 @@ public class CartActivity extends AppCompatActivity {
                 android.util.Log.e("CALLBACK", "Error calling test callback", e);
             }
         }).start();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1001) {
+            if (resultCode == RESULT_OK && data != null) {
+                String paymentResultUrl = data.getStringExtra(PayOSWebViewActivity.EXTRA_PAYMENT_RESULT);
+                // Xử lý kết quả thanh toán ở đây (ví dụ: parse URL, hiển thị thông báo, reload đơn hàng...)
+                Toast.makeText(this, "Kết quả thanh toán: " + paymentResultUrl, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Đã hủy hoặc lỗi khi thanh toán!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
