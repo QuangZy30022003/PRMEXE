@@ -24,9 +24,12 @@ public class UserProfile {
     @SerializedName("BirthDate")
     private String birthDate;
 
+    @SerializedName("RoleId")
+    private int roleId;
+
     public UserProfile() {}
 
-    public UserProfile(String id, String fullName, String email, String phone, String address, String gender, String birthDate) {
+    public UserProfile(String id, String fullName, String email, String phone, String address, String gender, String birthDate, int roleId) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
@@ -34,6 +37,7 @@ public class UserProfile {
         this.address = address;
         this.gender = gender;
         this.birthDate = birthDate;
+        this.roleId = roleId;
     }
 
     // Getters
@@ -44,6 +48,7 @@ public class UserProfile {
     public String getAddress() { return address; }
     public String getGender() { return gender; }
     public String getBirthDate() { return birthDate; }
+    public int getRoleId() { return roleId; }
 
     // Setters
     public void setId(String id) { this.id = id; }
@@ -53,4 +58,5 @@ public class UserProfile {
     public void setAddress(String address) { this.address = address; }
     public void setGender(String gender) { this.gender = gender; }
     public void setBirthDate(String birthDate) { this.birthDate = birthDate; }
+    public void setRoleId(int roleId) { this.roleId = roleId; }
 } 

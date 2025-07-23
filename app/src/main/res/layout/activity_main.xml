@@ -385,6 +385,85 @@
             android:layout_marginTop="8dp"
             android:stateListAnimator="@null" />
 
+     <!-- Admin Panel Section -->
+        <LinearLayout
+            android:id="@+id/adminPanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/card_background"
+            android:padding="16dp"
+            android:elevation="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🛡️ Admin Control Panel"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2C3E50"
+                android:gravity="center"
+                android:layout_marginBottom="16dp" />
+
+            <!-- User Management Button -->
+            <Button
+                android:id="@+id/btnUserManagement"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="👥 Quản lý người dùng"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#e74c3c"
+                android:elevation="4dp"
+                android:layout_marginBottom="8dp"
+                android:stateListAnimator="@null" />
+
+            <!-- User Statistics Button -->
+            <Button
+                android:id="@+id/btnUserStatistics"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="📊 Thống kê người dùng"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#3498db"
+                android:elevation="4dp"
+                android:layout_marginBottom="8dp"
+                android:stateListAnimator="@null" />
+
+            <!-- Role Management Button -->
+            <Button
+                android:id="@+id/btnRoleManagement"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="🔄 Quản lý vai trò"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#f39c12"
+                android:elevation="4dp"
+                android:layout_marginBottom="8dp"
+                android:stateListAnimator="@null" />
+
+            <!-- System Settings Button -->
+            <Button
+                android:id="@+id/btnSystemSettings"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="⚙️ Cài đặt hệ thống"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#9b59b6"
+                android:elevation="4dp"
+                android:stateListAnimator="@null" />
+
+        </LinearLayout>
+
      <!-- Create Promotion Button (Staff only) -->
         <Button
             android:id="@+id/btnCreatePromotion"
