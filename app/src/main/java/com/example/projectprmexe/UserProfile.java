@@ -27,6 +27,9 @@ public class UserProfile {
     @SerializedName("RoleId")
     private int roleId;
 
+    @SerializedName("CreatedAt")
+    private String createdAt;
+
     public UserProfile() {}
 
     public UserProfile(String id, String fullName, String email, String phone, String address, String gender, String birthDate, int roleId) {
@@ -49,6 +52,7 @@ public class UserProfile {
     public String getGender() { return gender; }
     public String getBirthDate() { return birthDate; }
     public int getRoleId() { return roleId; }
+    public String getCreatedAt() { return createdAt; }
 
     // Setters
     public void setId(String id) { this.id = id; }
@@ -59,4 +63,5 @@ public class UserProfile {
     public void setGender(String gender) { this.gender = gender; }
     public void setBirthDate(String birthDate) { this.birthDate = birthDate; }
     public void setRoleId(int roleId) { this.roleId = roleId; }
+    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
 } 

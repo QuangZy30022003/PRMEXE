@@ -5,6 +5,7 @@ import com.example.projectprmexe.models.UserListResponse;
 import com.example.projectprmexe.models.UserRoleUpdateRequest;
 import com.example.projectprmexe.models.UserStatisticsResponse;
 
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -46,4 +47,10 @@ public interface AdminUserApi {
     Call<UserStatisticsResponse> getUserStatistics(
         @Header("Authorization") String token
     );
+
+    @GET("api/Auth/all-users")
+    Call<List<UserProfile>> getAllUsersRaw(@Header("Authorization") String token);
+
+    @GET("api/Auth/confirmed-users")
+    Call<List<UserProfile>> getConfirmedUsers(@Header("Authorization") String token);
 }

@@ -193,13 +193,14 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    // Lưu token
-                    String token = response.body().getToken();
-                    SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-                    prefs.edit().putString("token", token).apply();
-
-                    Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-                    finish();
+                    String message = response.body().getMessage();
+                    if (message != null && !message.isEmpty()) {
+                        Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
                 } else {
                     Toast.makeText(RegisterActivity.this, "Đăng ký thất bại!", Toast.LENGTH_SHORT).show();
                 }

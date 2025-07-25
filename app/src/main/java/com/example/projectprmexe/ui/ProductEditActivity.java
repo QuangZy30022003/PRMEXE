@@ -203,12 +203,21 @@ public class ProductEditActivity extends AppCompatActivity {
 
         Toast.makeText(this, "Updating product: " + name, Toast.LENGTH_SHORT).show();
 
-        ProductAPI api = ProductInstance.getApiService();
-        Call<Void> call = api.updateProduct(productId, productDto);
+        // Lấy token từ SharedPreferences
+        android.content.SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String token = prefs.getString("token", null);
+        if (token == null) {
+            Toast.makeText(this, "Vui lòng đăng nhập lại để cập nhật sản phẩm!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        String authHeader = "Bearer " + token;
 
-        call.enqueue(new Callback<Void>() {
+        ProductAPI api = ProductInstance.getApiService();
+        retrofit2.Call<okhttp3.ResponseBody> call = api.updateProduct(productId, productDto, authHeader);
+
+        call.enqueue(new retrofit2.Callback<okhttp3.ResponseBody>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(retrofit2.Call<okhttp3.ResponseBody> call, retrofit2.Response<okhttp3.ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(ProductEditActivity.this, "Product updated successfully!", Toast.LENGTH_LONG).show();
                     finish(); // Return to management activity
@@ -219,7 +228,7 @@ public class ProductEditActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(retrofit2.Call<okhttp3.ResponseBody> call, Throwable t) {
                 Toast.makeText(ProductEditActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 System.out.println("Update product network error: " + t.getMessage());
             }

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#fff"
+    android:padding="12dp"
+    android:layout_marginBottom="8dp"
+    android:elevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tvPaymentId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="#1"
+            android:textStyle="bold"
+            android:textColor="#2c3e50"
+            android:textSize="16sp"
+            android:layout_marginEnd="12dp" />
+
+        <TextView
+            android:id="@+id/tvOrderId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order: 8"
+            android:textColor="#7f8c8d"
+            android:textSize="14sp"
+            android:layout_marginEnd="12dp" />
+
+        <TextView
+            android:id="@+id/tvPaymentMethod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VNPay"
+            android:textColor="#16a085"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:layout_marginEnd="12dp" />
+
+        <TextView
+            android:id="@+id/tvPaidAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="200,000 VND"
+            android:textColor="#e67e22"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:layout_marginEnd="12dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/tvPaymentDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="2025-05-20T01:20:16"
+            android:textColor="#7f8c8d"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvPaymentStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Paid"
+            android:textColor="#27ae60"
+            android:textStyle="bold"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+</LinearLayout> 

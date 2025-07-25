@@ -19,12 +19,15 @@ import com.example.projectprmexe.ui.CartActivity;
 import com.example.projectprmexe.ui.ProductListActivity;
 import com.example.projectprmexe.ui.ProductManagementActivity;
 import com.example.projectprmexe.ui.PromotionCreateActivity;
+import android.widget.LinearLayout;
+import com.example.projectprmexe.ui.PaymentActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button btnShowProducts, btnLogin, btnRegister, btnCart, btnLogout, btnProfile;
     private Button btnProductManagement, btnCreatePromotion, btnUserManagement;
-    private Button btnUserStatistics, btnRoleManagement, btnSystemSettings;
+    private Button btnUserStatistics;
+    private Button btnViewPayment;
     private LinearLayout adminPanel;
     private TextView tvUserStatus;
     private ActivityResultLauncher<Intent> loginLauncher;
@@ -64,8 +67,7 @@ public class MainActivity extends AppCompatActivity {
         btnCreatePromotion = findViewById(R.id.btnCreatePromotion);
         btnUserManagement = findViewById(R.id.btnUserManagement);
         btnUserStatistics = findViewById(R.id.btnUserStatistics);
-        btnRoleManagement = findViewById(R.id.btnRoleManagement);
-        btnSystemSettings = findViewById(R.id.btnSystemSettings);
+        btnViewPayment = findViewById(R.id.btnViewPayment);
         adminPanel = findViewById(R.id.adminPanel);
         tvUserStatus = findViewById(R.id.tvUserStatus);
 
@@ -151,19 +153,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, UserStatisticsActivity.class);
             startActivity(intent);
         });
+        }
 
-        btnRoleManagement.setOnClickListener(v -> {
-            // Navigate to User Management with role filter
-            Intent intent = new Intent(MainActivity.this, UserManagementActivity.class);
-            intent.putExtra("show_role_management", true);
+        btnViewPayment.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, PaymentActivity.class);
             startActivity(intent);
         });
-
-        btnSystemSettings.setOnClickListener(v -> {
-            // Show system settings dialog or navigate to settings activity
-            showSystemSettingsDialog();
-        });
-        }
     }
 
     private void updateUIBasedOnLoginStatus() {
@@ -206,43 +201,31 @@ public class MainActivity extends AppCompatActivity {
             btnShowProducts.setText("🛍️ Xem Sản Phẩm (Cần đăng nhập)");
             btnCart.setText("🛒 Giỏ Hàng (Cần đăng nhập)");
         }
+
+        // Ẩn/hiện nút thống kê người dùng và xem payment theo role
+        if (btnUserStatistics != null) {
+            if ("Admin".equalsIgnoreCase(role) || "4".equals(role)) {
+                btnUserStatistics.setVisibility(android.view.View.VISIBLE);
+            } else {
+                btnUserStatistics.setVisibility(android.view.View.GONE);
+            }
+        }
+        if (btnViewPayment != null) {
+            btnViewPayment.setVisibility(android.view.View.VISIBLE);
+        }
+
+        if (adminPanel != null) {
+            if ("Admin".equalsIgnoreCase(role) || "4".equals(role)) {
+                adminPanel.setVisibility(android.view.View.VISIBLE);
+            } else {
+                adminPanel.setVisibility(android.view.View.GONE);
+            }
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         updateUIBasedOnLoginStatus();
-    }
-
-    private void showSystemSettingsDialog() {
-        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setTitle("⚙️ System Settings");
-
-        String settingsInfo = "🔧 Admin System Configuration\n\n" +
-                "📊 Database: SQL Server - Exe202\n" +
-                "🌐 API Endpoint: http://10.0.2.2:5150\n" +
-                "🔐 Authentication: JWT Bearer Token\n" +
-                "👑 Admin Role: RoleId = 4\n\n" +
-                "📱 Available Features:\n" +
-                "• User Management with Filtering\n" +
-                "• Role Management with Validation\n" +
-                "• User Statistics Dashboard\n" +
-                "• Advanced Search & Pagination\n" +
-                "• Real-time Data Updates\n\n" +
-                "🛡️ Security Features:\n" +
-                "• Role-based Access Control\n" +
-                "• Admin Protection Rules\n" +
-                "• Input Validation\n" +
-                "• Business Rule Enforcement";
-
-        builder.setMessage(settingsInfo);
-        builder.setPositiveButton("✅ OK", null);
-        builder.setNeutralButton("📊 View Statistics", (dialog, which) -> {
-            Intent intent = new Intent(MainActivity.this, UserStatisticsActivity.class);
-            startActivity(intent);
-        });
-
-        android.app.AlertDialog dialog = builder.create();
-        dialog.show();
     }
 }
