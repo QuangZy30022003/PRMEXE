@@ -184,13 +184,22 @@ public class ProductManagementActivity extends AppCompatActivity implements Prod
 
     private void deleteProduct(ProductDto product) {
         Toast.makeText(this, "Deleting " + product.getName() + "...", Toast.LENGTH_SHORT).show();
-        
+
+        // Lấy token từ SharedPreferences
+        android.content.SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String token = prefs.getString("token", null);
+        if (token == null) {
+            Toast.makeText(this, "Vui lòng đăng nhập lại để xóa sản phẩm!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        String authHeader = "Bearer " + token;
+
         ProductAPI api = ProductInstance.getApiService();
-        Call<Void> call = api.deleteProduct(product.getProductId());
-        
-        call.enqueue(new Callback<Void>() {
+        retrofit2.Call<okhttp3.ResponseBody> call = api.deleteProduct(product.getProductId(), authHeader);
+
+        call.enqueue(new retrofit2.Callback<okhttp3.ResponseBody>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(retrofit2.Call<okhttp3.ResponseBody> call, retrofit2.Response<okhttp3.ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(ProductManagementActivity.this, "Product deleted successfully!", Toast.LENGTH_SHORT).show();
                     // Refresh the list
@@ -201,7 +210,7 @@ public class ProductManagementActivity extends AppCompatActivity implements Prod
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(retrofit2.Call<okhttp3.ResponseBody> call, Throwable t) {
                 Toast.makeText(ProductManagementActivity.this, "Delete failed: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });

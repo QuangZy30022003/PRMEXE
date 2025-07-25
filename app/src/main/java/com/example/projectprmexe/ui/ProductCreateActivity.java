@@ -137,12 +137,21 @@ public class ProductCreateActivity extends AppCompatActivity {
 
         Toast.makeText(this, "Creating product: " + name, Toast.LENGTH_SHORT).show();
 
-        ProductAPI api = ProductInstance.getApiService();
-        Call<ProductCreateUpdateDto> call = api.createProduct(productDto);
+        // Lấy token từ SharedPreferences
+        android.content.SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String token = prefs.getString("token", null);
+        if (token == null) {
+            Toast.makeText(this, "Vui lòng đăng nhập lại để tạo sản phẩm!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        String authHeader = "Bearer " + token;
 
-        call.enqueue(new Callback<ProductCreateUpdateDto>() {
+        ProductAPI api = ProductInstance.getApiService();
+        retrofit2.Call<ProductCreateUpdateDto> call = api.createProduct(productDto, authHeader);
+
+        call.enqueue(new retrofit2.Callback<ProductCreateUpdateDto>() {
             @Override
-            public void onResponse(Call<ProductCreateUpdateDto> call, Response<ProductCreateUpdateDto> response) {
+            public void onResponse(retrofit2.Call<ProductCreateUpdateDto> call, retrofit2.Response<ProductCreateUpdateDto> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(ProductCreateActivity.this, "Product created successfully!", Toast.LENGTH_LONG).show();
                     finish(); // Return to management activity
@@ -153,7 +162,7 @@ public class ProductCreateActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ProductCreateUpdateDto> call, Throwable t) {
+            public void onFailure(retrofit2.Call<ProductCreateUpdateDto> call, Throwable t) {
                 Toast.makeText(ProductCreateActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 System.out.println("Create product network error: " + t.getMessage());
             }

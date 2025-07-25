@@ -94,6 +94,7 @@
             android:exported="false" />
 
         <activity android:name=".ui.PayOSWebViewActivity" />
+        <activity android:name=".ui.PaymentActivity" />
 
     </application>
 

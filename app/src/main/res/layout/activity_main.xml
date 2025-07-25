@@ -435,36 +435,30 @@
                 android:layout_marginBottom="8dp"
                 android:stateListAnimator="@null" />
 
-            <!-- Role Management Button -->
+        </LinearLayout>
+
+        <!-- Nút Xem Payment cho tất cả user -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp">
+
             <Button
-                android:id="@+id/btnRoleManagement"
+                android:id="@+id/btnViewPayment"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:text="🔄 Quản lý vai trò"
+                android:text="💳 Xem Payment"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
-                android:backgroundTint="#f39c12"
+                android:backgroundTint="#16a085"
                 android:elevation="4dp"
                 android:layout_marginBottom="8dp"
                 android:stateListAnimator="@null" />
-
-            <!-- System Settings Button -->
-            <Button
-                android:id="@+id/btnSystemSettings"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="⚙️ Cài đặt hệ thống"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColor="#FFFFFF"
-                android:backgroundTint="#9b59b6"
-                android:elevation="4dp"
-                android:stateListAnimator="@null" />
-
         </LinearLayout>
 
-     <!-- Create Promotion Button (Staff only) -->
+        <!-- Create Promotion Button (Staff only) -->
         <Button
             android:id="@+id/btnCreatePromotion"
             android:layout_width="match_parent"
